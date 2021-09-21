@@ -1,9 +1,8 @@
-﻿using CeitineCheeseAPI.Services;
+﻿using CheeseAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 
-namespace CeitineCheeseAPI.Controllers
+namespace CheeseAPI.Controllers
 {
     [ApiController]
     [Route("api/cheese")]

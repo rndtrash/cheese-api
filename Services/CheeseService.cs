@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace CeitineCheeseAPI.Services
+namespace CheeseAPI.Services
 {
     public static class CheeseService
     {
