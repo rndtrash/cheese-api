@@ -9,7 +9,7 @@ namespace CheeseAPI.Services
     public static class CheeseService
     {
         public static TimeSpan CHEESE_POOL_UPDATE_RATE = TimeSpan.FromHours(12);
-        public static readonly uint CHEESE_PAGES = 10;
+        public static readonly uint CHEESE_PAGES;
         public static readonly string FLICKR_TOKEN = Environment.GetEnvironmentVariable("CHEESE_FLICKR_TOKEN");
         public static readonly string API_URL;
 
@@ -28,6 +28,7 @@ namespace CheeseAPI.Services
             catch (Exception)
             {
                 Console.WriteLine("Using default page count.");
+				CHEESE_PAGES = 10;
             }
 
             UpdateCheesePool();
