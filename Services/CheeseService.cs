@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 
 namespace CheeseAPI.Services
 {
@@ -28,7 +29,7 @@ namespace CheeseAPI.Services
             catch (Exception)
             {
                 Console.WriteLine("Using default page count.");
-				CHEESE_PAGES = 10;
+                CHEESE_PAGES = 10;
             }
 
             UpdateCheesePool();
@@ -74,7 +75,7 @@ namespace CheeseAPI.Services
             return CheesePool.Count;
         }
 
-        public static void UpdateCheesePool()
+        public static async void UpdateCheesePool()
         {
             if (CheesePoolUpdating)
                 return;
@@ -96,11 +97,10 @@ namespace CheeseAPI.Services
                 {
                     List<Uri> NewerCheesePool = new(), MixCheesePool = new();
                     var uri = string.Format(API_URL, page);
-                    var req = WebRequest.Create(uri);
-                    var res = req.GetResponse();
-                    var dataStream = res.GetResponseStream();
+                    var req = await new HttpClient().GetAsync(uri);
+                    var dataStream = await req.Content.ReadAsStreamAsync();
                     var reader = new StreamReader(dataStream);
-                    var text = reader.ReadToEnd();
+                    var text = await reader.ReadToEndAsync();
                     var json = JObject.Parse(text);
                     foreach (var photo in json["photos"]["photo"])
                     {
@@ -114,6 +114,7 @@ namespace CheeseAPI.Services
                         else
                             MixCheesePool.Add(curi);
                     }
+
                     if (MixCheesePool.Count > 0)
                         NewerCheesePool.AddRange(MixCheesePool);
                     NewCheesePool.Add(string.Join("\n", NewerCheesePool));
